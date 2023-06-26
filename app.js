@@ -3,20 +3,26 @@ require("dotenv").config("./env");
 const mysql = require("mysql2");
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DATABASE,
-  port: process.env.DB_PORT,
+  host: process.env.DB_HOST || "sql8.freesqldatabase.com",
+  user: process.env.DB_USERNAME || "sql8628575",
+  password: process.env.DB_PASSWORD || "7PUPSfN5p9",
+  database: process.env.DATABASE || "sql8628575",
+  port: process.env.DB_PORT || 3306,
 });
 
 const app = express();
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+});
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+
 
 app.get("/", (req, res) => {
   res.json({ message: "ok" });
@@ -106,7 +112,7 @@ app.post("/addAgricropsyeild", function (req, res) {
   );
 });
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3030;
 app.listen(port, () => {
   console.log(`Working...`);
 });
